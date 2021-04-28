@@ -1,0 +1,4 @@
+%{
+  "poolboy": {:hex, :poolboy, "1.5.2", "392b007a1693a64540cead79830443abf5762f5d30cf50bc95cb2c1aaafa006b", [:rebar3], [], "hexpm", "dad79704ce5440f3d5a3681c8590b9dc25d1a561e8f5a9c995281012860901e3"},
+  "sftp_ex": {:hex, :sftp_ex, "0.2.6", "89cbb3985791c902ab002f7a619490108f1b4dbec7cdc2424450602f0493de32", [:mix], [], "hexpm", "8e532500604a91fe0115789916ec9ab50b019b56d579b3d6f0bd6baf9f16e379"},
+}
