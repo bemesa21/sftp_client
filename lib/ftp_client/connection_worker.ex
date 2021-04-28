@@ -22,4 +22,19 @@ defmodule FtpClient.ConnectionWorker do
     result = FtpClient.write_file(channel, data, name)
     {:reply, result, channel}
   end
+
+  def handle_call({:list, path}, _from, channel) do
+    result = FtpClient.list_files(channel, path)
+    {:reply, result, channel}
+  end
+
+  def handle_call({:create_dir, path}, _from, channel) do
+    result = FtpClient.create_directory(channel, path)
+    {:reply, result, channel}
+  end
+
+  def handle_call({:read_file, path}, _from, channel) do
+    result = FtpClient.read_file(channel, path)
+    {:reply, result, channel}
+  end
 end
