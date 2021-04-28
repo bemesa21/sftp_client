@@ -1,6 +1,5 @@
 defmodule FtpClientTest do
   use ExUnit.Case
-  doctest FtpClient
   alias FtpClient.RemoteParams
 
   test "upload a file" do

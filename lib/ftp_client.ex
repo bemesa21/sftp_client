@@ -22,7 +22,6 @@ defmodule FtpClient do
     )
   end
 
-
   def create_dir(path) do
     :poolboy.transaction(
       :worker,
@@ -38,18 +37,19 @@ defmodule FtpClient do
       5000
     )
   end
+
   @doc """
   write_file/3 Writes a file to the server, by default in the user directory
   The file is created if it does not exist but overwritten if it exists.
   ## Examples
 
-      iex> write_file(%FtpConnection{}, "hello", "test.txt")
+      iex> write_file(%SftpConnection{}, "hello", "test.txt")
       {:ok, "path/to/file/my_file.txt"}
 
-      iex> write_file(%FtpConnection{}, "hello", "test.txt")
+      iex> write_file(%SftpConnection{}, "hello", "test.txt")
       {:error, :permission_denied}
   """
-  @spec write_file(SftpConnection.t(), binary(), charlist()) ::
+  @spec write_file(SfftpConnection.t(), binary(), charlist()) ::
           {:ok, charlist()} | {:error, :atom}
   def write_file(channel, data, file_name) do
     file_path = channel.remote_params.path <> file_name
@@ -61,17 +61,16 @@ defmodule FtpClient do
     end
   end
 
-
   @doc """
   list_files/2 List the files in the given path, if it exists
   return a list of file_names
 
   ## Examples
 
-      iex> list_files(%FtpConnection{}, '/existent_path/')
+      iex> list_files(%SftpConnection{}, '/existent_path/')
       {:ok, ['.', '..', 'my_file.txt']}
 
-      iex> list_files(%FtpConnection{}, '/unexistent_path/')
+      iex> list_files(%SftpConnection{}, '/unexistent_path/')
       {:error, :no_such_file}
   """
   def list_files(channel, path) do
@@ -85,14 +84,15 @@ defmodule FtpClient do
 
   ## Examples
 
-      iex> create_directory(%FtpConnection{}, '/existent_path/new_directory')
+      iex> create_directory(%SftpConnection{}, '/existent_path/new_directory')
       :ok
 
-      iex> create_directory(%FtpConnection{}, '/unexistent_path/new_directory')
+      iex> create_directory(%SftpConnection{}, '/unexistent_path/new_directory')
       {:error, :no_such_file}
   """
   def create_directory(channel, directory_path) do
     result = :ssh_sftp.make_dir(channel.pid, directory_path)
+
     case result do
       :ok -> {:ok, directory_path}
       {:error, reason} -> {:error, reason}
