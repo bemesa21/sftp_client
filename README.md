@@ -1,21 +1,79 @@
-# FtpClient
+# SftpClient
 
-**TODO: Add description**
+This is a wrapper around the `:ssh_sftp` erlangs library.
+It uses `poolboy` to create n connections when the application is started.
+By doing so you avoid to create a new connection every time that you need to 
+read, write or list the files in the ssh server.
 
-## Installation
+Also there are some metrics reporting implemented with `telemetry`and `statix`
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ftp_client` to your list of dependencies in `mix.exs`:
 
+## Configuration
+
+You have to change your dev configurations in `dev.exs`
 ```elixir
-def deps do
-  [
-    {:ftp_client, "~> 0.1.0"}
-  ]
-end
+
+config :ftp_client, FtpClient.ConnectionParams,
+  host: '',
+  port: 22,
+  user: '',
+  password: '',
+  user_interaction: false,
+  silently_accept_hosts: true,
+  rekey_limit: 1_000_000_000_000
+
+config :ftp_client, FtpClient.RemoteParams,
+  path: "/home/",
+  permissions: [:write, :binary, :creat]
+  ```
+the most important configurations are:
+- host: your sftp server url
+- user: your authorized user
+- passworf: your sftp password
+- path: it has to be a directory that exists in the sftp server
+
+Also you can specify how many connections you want in `application.ex` by changing the pool `size`:
+```elixir
+  defp poolboy_config do
+    [
+      name: {:local, :worker},
+      worker_module: FtpClient.ConnectionWorker,
+      size: 3,
+      max_overflow: 2
+    ]
+  end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ftp_client](https://hexdocs.pm/ftp_client).
+## Usage
+Run an IEx session
 
+`iex -S mix`
+
+You will see this logs if there are no errors
+```
+21:58:23.742 [info]  Received [:sftp_client, :startup, :pool] event. Connection stablished in: 10108948000, Pid: #PID<0.292.0>
+```
+
+- You can write a file:
+
+```elixir
+FtpClient.write("some conteeeent", "my_file.txt")
+```
+
+- You can read a file:
+
+```elixir
+FtpClient.read("test_dir/my_file.txt")
+```
+
+- You can list the files in some directory:
+
+```elixir
+FtpClient.list("test_dir/")
+```
+
+- You can create a new directory:
+
+```elixir
+FtpClient.create_dir("my_new_dir/")
+```
