@@ -1,11 +1,11 @@
-defmodule FtpClient.ConnectionWorker do
+defmodule SftpClient.ConnectionWorker do
   use GenServer
   require Logger
   @impl true
   def init(_stack) do
     start = System.monotonic_time()
 
-    case FtpClient.SftpConnection.init_channel() do
+    case SftpClient.SftpConnection.init_channel() do
       {:ok, channel} ->
         measurements = %{
           execution_time: get_execution_time(start)
@@ -28,7 +28,7 @@ defmodule FtpClient.ConnectionWorker do
   def handle_call({:write, data, name}, _from, channel) do
     start = System.monotonic_time()
 
-    result = FtpClient.write_file(channel, data, name)
+    result = SftpClient.write_file(channel, data, name)
 
     metadata = %{
       filename: name
@@ -44,17 +44,17 @@ defmodule FtpClient.ConnectionWorker do
   end
 
   def handle_call({:list, path}, _from, channel) do
-    result = FtpClient.list_files(channel, path)
+    result = SftpClient.list_files(channel, path)
     {:reply, result, channel}
   end
 
   def handle_call({:create_dir, path}, _from, channel) do
-    result = FtpClient.create_directory(channel, path)
+    result = SftpClient.create_directory(channel, path)
     {:reply, result, channel}
   end
 
   def handle_call({:read_file, path}, _from, channel) do
-    result = FtpClient.read_file(channel, path)
+    result = SftpClient.read_file(channel, path)
     {:reply, result, channel}
   end
 

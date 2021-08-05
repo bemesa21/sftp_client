@@ -2,7 +2,7 @@ use Mix.Config
 
 config :ftp_client, :client, :ssh_sftp
 
-config :ftp_client, FtpClient.ConnectionParams,
+config :ftp_client, SftpClient.ConnectionParams,
   host: '',
   port: 22,
   user: '',
@@ -11,6 +11,6 @@ config :ftp_client, FtpClient.ConnectionParams,
   silently_accept_hosts: true,
   rekey_limit: 1_000_000_000_000
 
-config :ftp_client, FtpClient.RemoteParams,
-  path: "/home/",
+config :ftp_client, SftpClient.RemoteParams,
+  path: "test_dir/",
   permissions: [:write, :binary, :creat]

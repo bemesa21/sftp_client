@@ -1,6 +1,6 @@
-defmodule FtpClient.Telemetry.Metrics do
+defmodule SftpClient.Telemetry.Metrics do
   require Logger
-  alias FtpClient.Telemetry.StatsdReporter
+  alias SftpClient.Telemetry.StatsdReporter
 
   @handled_events [
     [:sftp_client, :connection, :stablished],

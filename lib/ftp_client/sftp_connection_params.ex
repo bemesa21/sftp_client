@@ -1,4 +1,4 @@
-defmodule FtpClient.ConnectionParams do
+defmodule SftpClient.ConnectionParams do
   defstruct [
     :host,
     :port,
@@ -9,7 +9,7 @@ defmodule FtpClient.ConnectionParams do
     :rekey_limit
   ]
 
-  alias FtpClient.ConnectionParams
+  alias SftpClient.ConnectionParams
 
   @type t :: %__MODULE__{}
 

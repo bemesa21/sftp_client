@@ -1,6 +1,6 @@
-defmodule FtpClient.RemoteParams do
+defmodule SftpClient.RemoteParams do
   defstruct [:path, :permissions]
-  alias FtpClient.RemoteParams
+  alias SftpClient.RemoteParams
 
   def fetch do
     opts = Application.get_env(:ftp_client, __MODULE__)

@@ -1,10 +1,10 @@
-defmodule FtpClientTest do
+defmodule SftpClientTest do
   use ExUnit.Case
-  alias FtpClient.RemoteParams
+  alias SftpClient.RemoteParams
 
   test "upload a file" do
     params = RemoteParams.fetch()
-    result = FtpClient.write("Esto en un txt", "test.txt")
+    result = SftpClient.write("Esto en un txt", "test.txt")
     assert result == {:ok, params.path <> "test.txt"}
   end
 end

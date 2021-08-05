@@ -13,7 +13,7 @@ Also there are some metrics reporting implemented with `telemetry`and `statix`
 You have to change your dev configurations in `dev.exs`
 ```elixir
 
-config :ftp_client, FtpClient.ConnectionParams,
+config :ftp_client, SftpClient.ConnectionParams,
   host: '',
   port: 22,
   user: '',
@@ -22,7 +22,7 @@ config :ftp_client, FtpClient.ConnectionParams,
   silently_accept_hosts: true,
   rekey_limit: 1_000_000_000_000
 
-config :ftp_client, FtpClient.RemoteParams,
+config :ftp_client, SftpClient.RemoteParams,
   path: "/home/",
   permissions: [:write, :binary, :creat]
   ```
@@ -37,7 +37,7 @@ Also you can specify how many connections you want in `application.ex` by changi
   defp poolboy_config do
     [
       name: {:local, :worker},
-      worker_module: FtpClient.ConnectionWorker,
+      worker_module: SftpClient.ConnectionWorker,
       size: 3,
       max_overflow: 2
     ]
@@ -57,23 +57,23 @@ You will see this logs if there are no errors
 - You can write a file:
 
 ```elixir
-FtpClient.write("some conteeeent", "my_file.txt")
+SftpClient.write("some conteeeent", "my_file.txt")
 ```
 
 - You can read a file:
 
 ```elixir
-FtpClient.read("test_dir/my_file.txt")
+SftpClient.read("test_dir/my_file.txt")
 ```
 
 - You can list the files in some directory:
 
 ```elixir
-FtpClient.list("test_dir/")
+SftpClient.list("test_dir/")
 ```
 
 - You can create a new directory:
 
 ```elixir
-FtpClient.create_dir("my_new_dir/")
+SftpClient.create_dir("my_new_dir/")
 ```

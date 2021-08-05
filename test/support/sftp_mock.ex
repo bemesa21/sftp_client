@@ -1,4 +1,4 @@
-defmodule FtpClient.Mock do
+defmodule SftpClient.Mock do
   def open(_connection, _remote_path, _mode) do
     {:ok, {}}
   end

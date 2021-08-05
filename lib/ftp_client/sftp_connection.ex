@@ -1,9 +1,9 @@
-defmodule FtpClient.SftpConnection do
+defmodule SftpClient.SftpConnection do
   defstruct [:pid, :ref, :remote_params]
 
   @type t :: %__MODULE__{}
 
-  alias FtpClient.ConnectionParams
+  alias SftpClient.ConnectionParams
 
   @sftp_client Application.get_env(:ftp_client, :client)
 
@@ -15,9 +15,9 @@ defmodule FtpClient.SftpConnection do
   defp start_sftp_channel(params) do
     case @sftp_client.start_channel(params.host, params.port, ConnectionParams.opts(params)) do
       {:ok, channel_pid, connection_ref} ->
-        remote_params = FtpClient.RemoteParams.fetch()
+        remote_params = SftpClient.RemoteParams.fetch()
 
-        connection = %FtpClient.SftpConnection{
+        connection = %SftpClient.SftpConnection{
           pid: channel_pid,
           ref: connection_ref,
           remote_params: remote_params

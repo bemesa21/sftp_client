@@ -1,4 +1,4 @@
-defmodule FtpClient.MixProject do
+defmodule SftpClient.MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule FtpClient.MixProject do
   def application do
     [
       extra_applications: [:logger, :ssh],
-      mod: {FtpClient.Application, []}
+      mod: {SftpClient.Application, []}
     ]
   end
 

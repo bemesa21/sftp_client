@@ -1,3 +1,3 @@
-defmodule FtpClient.Telemetry.StatsdReporter do
+defmodule SftpClient.Telemetry.StatsdReporter do
   use Statix
 end
