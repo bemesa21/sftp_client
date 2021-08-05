@@ -3,8 +3,15 @@ defmodule FtpClient.ConnectionWorker do
   require Logger
   @impl true
   def init(_stack) do
+    start = System.monotonic_time()
+
     case FtpClient.SftpConnection.init_channel() do
       {:ok, channel} ->
+        measurements = %{
+          execution_time: get_execution_time(start)
+        }
+
+        :telemetry.execute([:sftp_client, :connection, :stablished], measurements, channel)
         {:ok, channel}
 
       {:error, error} ->
@@ -19,7 +26,20 @@ defmodule FtpClient.ConnectionWorker do
 
   @impl true
   def handle_call({:write, data, name}, _from, channel) do
+    start = System.monotonic_time()
+
     result = FtpClient.write_file(channel, data, name)
+
+    metadata = %{
+      filename: name
+    }
+
+    measurements = %{
+      execution_time: get_execution_time(start)
+    }
+
+    :telemetry.execute([:sftp_client, :file, :created], measurements, metadata)
+
     {:reply, result, channel}
   end
 
@@ -36,5 +56,10 @@ defmodule FtpClient.ConnectionWorker do
   def handle_call({:read_file, path}, _from, channel) do
     result = FtpClient.read_file(channel, path)
     {:reply, result, channel}
+  end
+
+  defp get_execution_time(start_time) do
+    end_time = System.monotonic_time()
+    System.convert_time_unit(end_time - start_time, :native, :nanosecond)
   end
 end

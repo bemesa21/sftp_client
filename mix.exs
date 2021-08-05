@@ -27,7 +27,9 @@ defmodule FtpClient.MixProject do
   defp deps do
     [
       {:sftp_ex, "~> 0.2.1"},
-      {:poolboy, "~> 1.5.1"}
+      {:poolboy, "~> 1.5.1"},
+      {:telemetry, "~> 0.4.1"},
+      {:statix, ">= 0.0.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]

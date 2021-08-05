@@ -49,7 +49,7 @@ defmodule FtpClient do
       iex> write_file(%SftpConnection{}, "hello", "test.txt")
       {:error, :permission_denied}
   """
-  @spec write_file(SfftpConnection.t(), binary(), charlist()) ::
+  @spec write_file(SftpConnection.t(), binary(), charlist()) ::
           {:ok, charlist()} | {:error, :atom}
   def write_file(channel, data, file_name) do
     file_path = channel.remote_params.path <> file_name

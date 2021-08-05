@@ -16,6 +16,16 @@ defmodule FtpClient.Application do
 
   @impl true
   def start(_type, _args) do
+    FtpClient.Telemetry.StatsdReporter.connect()
+
+    :ok =
+      :telemetry.attach_many(
+        "sftp_events_collector",
+        FtpClient.Telemetry.Metrics.handled_events(),
+        &FtpClient.Telemetry.Metrics.handle_event/4,
+        nil
+      )
+
     children = [
       :poolboy.child_spec(:worker, poolboy_config())
       # Starts a worker by calling: FtpClient.Worker.start_link(arg)
